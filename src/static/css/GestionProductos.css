@@ -1,0 +1,30 @@
+.card {
+    margin-bottom: 20px;
+}
+
+.table-responsive {
+    max-height: 60vh;
+    overflow-x: auto;
+    overflow-y: auto; 
+}
+
+#productList {
+    width: 100%;
+}
+
+#productList th, #productList td {
+    vertical-align: middle;
+    white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+}
+
+#productList th, #productList td {
+    vertical-align: middle;
+}
+
+#noProductsRow {
+    display: none;
+}
+
+#productName, #productDescription, #editProductName, #editProductDescription {
+    max-width: 100%;
+}

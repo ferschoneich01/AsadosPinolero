@@ -1,0 +1,107 @@
+<div class="container mt-3">
+    <!-- Sección de Búsqueda de Cliente -->
+    <div class="card mb-4">
+        <h2>Nueva venta</h2>
+        <div class="card-header">Buscar Cliente</div>
+        <div class="card-body">
+            <form id="clienteForm">
+                <div class="row g-3">
+                    <!-- Selector de filtro -->
+                    <div class="col-sm-5">
+                        <label for="filtroBusClient" class="form-label">Buscar por:</label>
+                        <select id="filtroBusClient" class="form-select">
+                            <option value="2">Nombre</option>
+                            <option value="1">Cédula</option>
+                            <option value="3">Telefono</option>
+                        </select>
+                    </div>
+                    <div class="col-md-5">
+                        <label for="cedulaCliente" class="form-label">Cliente</label>
+                        <input type="text" class="form-control" id="cedulaCliente"
+                            placeholder="Ingrese los datos del cliente...">
+                    </div>
+                    <div class="col-md-1 d-flex flex-column">
+                        <a href="#" id="btn-searchClient" class="mt-auto">
+                            <i class="bx bx-search" style="font-size: 2rem; color: rgb(252, 120, 25);"></i>
+                        </a>
+                        <!--button type="button" class="btn btn-primary mt-auto" onclick=" buscarCliente()">Buscar</button-->
+                    </div>
+
+                </div>
+
+                <!-- Sección para cargar datos del cliente -->
+                <div id="clienteDatos" class="mt-4">
+                    <h5>Datos del Cliente</h5>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="NombreCliente" class="form-label">Nombre:</label>
+                            <input type="text" class="form-control" id="NombreCliente" disabled>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="direccionCliente" class="form-label">Dirección</label>
+                            <input type="text" class="form-control" id="direccionCliente" disabled>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="telefonoCliente" class="form-label">Teléfono</label>
+                            <input type="text" class="form-control" id="telefonoCliente" disabled>
+                        </div>
+                        <div class="col-md-5 d-flex flex-column">
+                            <a id="btnInitSell" href="#buscador"
+                                class="disabled btn btn-success mt-auto btn-searchClient" aria-disabled="true">
+                                <i style="font-size: 1.2rem;" class="bx bxs-badge-dollar">
+                                </i>
+                                Iniciar venta
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Sección de Búsqueda de Productos -->
+    <div id="contetn-gestProduct" class="card mb-4">
+
+    </div>
+
+    <!-- Tabla de Productos Agregados -->
+    <div id="containerProducts" class="card">
+        <div class="card-header">Productos en la Venta</div>
+        <div class="card-body">
+            <table id="tableProducts" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Codigo</th>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaProductos"></tbody>
+            </table>
+
+            <!-- Monto total de la venta -->
+            <div class="text-end m-2 p-2 border-1 border-success">
+                <h3 style="color: black;">Total: C$ <span id="montoTotal">0.00</span> </h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="card p-3 align-content-center">
+        <div class="form-group m-2">
+            <label for="comentarios">Observacion:</label>
+            <textarea id="observacion" class="form-control" rows="5" placeholder="Observacion de venta..."></textarea>
+        </div>
+        <button id="btnGuardarVenta" class="btn btn-success m-2" disabled>GUARDAR VENTA</button>
+        <button id="btnCancelar" class="btn btn-danger m-2">CANCELAR</button>
+    </div>
+
+</div>
+<!-- Modal para mostrar el PDF -->
+<div class="modal-factura" id="modalFactura">
+    <div class="modal-content-factura">
+        <button class="modal-close-factura" onclick="cerrarFacturaModal()">×</button>
+        <iframe id="iframeFactura" src=""></iframe>
+    </div>
+</div>

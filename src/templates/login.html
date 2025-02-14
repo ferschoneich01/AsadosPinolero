@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/login.css')}}">
+    <title>Blandon Comercial | Login</title>
+</head>
+
+<body>
+    <div class="container" id="container">
+        <div class="form-container sign-in">
+            <form id="loginForm" action="/login" method="POST">
+                <h1>Inicio de Sesión</h1>
+                <span class="pROBANSA__SDAFE"><br><br></span>
+
+                <!-- Mostrar el mensaje de error si existe -->
+                {% if error %}
+                <p style="color: red; font-weight: bold; text-align: center;">{{ error }}</p>
+                {% endif %}
+
+                <input type="text" id="nombre_usuario" name="nombre_usuario" placeholder="Usuario" value="{{ request.form.get('nombre_usuario', '') }}" required>
+                <input type="password" id="pass" name="pass" placeholder="Contraseña" required>
+                <a href="#">¿Olvidaste tu Contraseña?</a>
+                <button type="submit">Entrar</button>
+            </form>
+        </div>
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-right">
+                    <h1>¡Bienvenido de Nuevo!</h1>
+                    <div class="logo-container">
+                        <img src="{{url_for('static', filename='assets/LOGO.svg')}}" style="width: 15vh;">
+                        <div class="logo-name">Blandon Comercial</div>
+                    </div>
+                    <p>Introduce tus credenciales para utilizar todas las funciones del sitio.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{url_for('static', filename='js/login.js')}}"></script>
+</body>
+</html>

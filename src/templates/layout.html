@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="{{url_for('static', filename='assets/LOGO.svg')}}">
+
+    <title>Blandon Comercial</title>
+
+    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/layout.css')}}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <!-- BOXICONS -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- Incluir jQuery para manejar AJAX -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.4/lottie.min.js"></script>
+</head>
+
+<body>
+    <div class="navmenu">
+        <div class="logo-container">
+            <i class="bx logo" id="btn-menu"></i>
+            <div class="logo-name">Blandon Comercial</div>
+        </div>
+
+
+        <ul class="nav-container">
+            <li>
+                <a href="/GestionVentas">
+                    <i class='bx bx-money-withdraw'></i>
+                    <span class="links">Facturacion</span>
+                </a>
+                <span class="tooltip">Facturacion</span>
+            </li>
+            <li>
+                <a href="/GestionDeudas">
+                    <i class='bx bx-dollar-circle'></i>
+                    <span class="links">Deudas</span>
+                </a>
+                <span class="tooltip">Deudas</span>
+            </li>
+            <li>
+                <a href="/GestionCliente">
+                    <i class='bx bx-user-plus'></i>
+                    <span class="links">Clientes</span>
+                </a>
+                <span class="tooltip">Clientes</span>
+            </li>
+            <li>
+                <a href="/GestionProductos">
+                    <i class='bx bxs-receipt'></i>
+                    <span class="links">Productos</span>
+                </a>
+                <span class="tooltip">Productos</span>
+            </li>
+            <li>
+                <a href="/GestionReportes">
+                    <i class='bx bxs-report'></i>
+                    <span class="links">Reportes</span>
+                </a>
+                <span class="tooltip">Reportes</span>
+            </li>
+        </ul>
+
+
+        <div class="user">
+            <div class="user-container">
+                <div class="user-details">
+                    <div class="name">{{username}}</div>
+                </div>
+            </div>
+            <i class='bx bx-log-out-circle' id="logout"></i>
+        </div>
+    </div>
+
+    <div class="container-main pt-3">
+        <div class="container">
+            <div class="row">
+                <div class="col" style="text-align: left;">
+                    <p style="color: #FF6500">
+                        ¡<label id="greetingLabel"></label> {{nameuser}}!
+                    </p>
+                </div>
+                <div class="col" style="text-align: right;">
+                    <p id="fecha" style="color: rgb(252, 120, 25);">
+                        Cargando...</p>
+                </div>
+            </div>
+        </div>
+
+        {% block body %}
+        {% endblock %}
+    </div>
+
+    <!-- Modal para editar producto -->
+    <div class="modal fade" id="editModalProduct" tabindex="-1" aria-labelledby="editModalProductLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Editar Producto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editProductForm" action="/updateProduct" method="POST">
+                        <input type="hidden" id="editProductId" name="productid">
+                        <div class="mb-3">
+                            <label for="editProductName" class="form-label">Nombre del Producto</label>
+                            <input type="text" class="form-control" id="editProductName" name="nombreProducto"
+                                maxlength="50" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editProductDescription" class="form-label">Descripción</label>
+                            <textarea class="form-control" id="editProductDescription" name="descripcionProducto"
+                                rows="3" maxlength="255"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Editar Cliente -->
+    <div class="modal fade" id="editModalClient" tabindex="-1" aria-labelledby="editModalClientLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editClientModalLabel">Editar Cliente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editClientForm" action="/updateClient" method="POST">
+                        <input type="hidden" id="editClientId" name="clienteid">
+                        <div class="mb-3">
+                            <label for="editClientCedula" class="form-label">Cedula</label>
+                            <input type="cedula" class="form-control" id="editClientCedula" name="cedulaCliente"
+                                readonly maxlength="100">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editClientName" class="form-label">Nombres</label>
+                            <input type="text" class="form-control" id="editClientName" name="nombreCliente"
+                                maxlength="100" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editClientSurName" class="form-label">Apellidos</label>
+                            <input type="text" class="form-control" id="editClientSurName" name="apellidoCliente"
+                                maxlength="100" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editClientPhone" class="form-label">Teléfono</label>
+                            <input type="tel" class="form-control" id="editClientPhone" name="telefonoCliente"
+                                maxlength="20">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editClientAddress" class="form-label">Dirección</label>
+                            <textarea class="form-control" id="editClientAddress" name="direccionCliente" rows="3"
+                                maxlength="255"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Actualizar Cliente</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Error -->
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="errorModalLabel">Error al Ingresar Cliente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Aquí se mostrarán los mensajes de error -->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                    {% for category, message in messages %}
+                    <!-- Mostrar solo los mensajes de error -->
+                    {% if category == 'error' %}
+                    <div class="alert alert-danger">
+                        {{ message }}
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de espera -->
+    <div class="modal fade" id="loadingModal" tabindex="-1" aria-labelledby="loadingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <p>Procesando Por Favor Espere...</p>
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Detalles de Venta -->
+    <div class="modal fade" id="detallesVentaModal" tabindex="-1" aria-labelledby="detallesVentaModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="detallesVentaModalLabel">Detalles de la Venta</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Cliente:</strong> <span id="clienteNombre"></span></p>
+                    <p><strong>Fecha de Venta:</strong> <span id="fechaVenta"></span></p>
+                    <p><strong>Monto Total Venta:</strong> C$ <span id="ventaTotal"></span></p>
+
+                    <!-- Tabla de productos -->
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Precio Unitario</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productosTableBody">
+                            <!-- Aquí se llenarán los productos con JS -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <!-- Botón Eliminar en el extremo izquierdo -->
+                    <button id="eliminarVentaBtn" type="button" class="btn btn-danger float-start">Eliminar</button>
+
+                    <!-- Botón Cerrar en el extremo derecho -->
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal para realizar pago -->
+    <div class="modal fade" id="pagoModal" tabindex="-1" aria-labelledby="pagoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pagoModalLabel">Realizar Pago</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Información del cliente y las ventas -->
+                    <p><strong>Cliente:</strong> <span id="nombreClientePago"></span></p>
+                    <p><strong>Ventas:</strong> <span id="ventaIdsPago"></span></p>
+
+                    <!-- Opciones de pago -->
+                    <h5>Opciones de Pago</h5>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="tipoPago" id="pagoTotal" value="total"
+                            checked>
+                        <label class="form-check-label" for="pagoTotal">Pagar Total</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="tipoPago" id="pagoParcial" value="parcial">
+                        <label class="form-check-label" for="pagoParcial">Pagar Parcial</label>
+                    </div>
+
+                    <!-- Campo para pago parcial -->
+                    <div class="mt-3">
+                        <label for="montoParcialInput" class="form-label">Monto</label>
+                        <input type="number" class="form-control" id="montoParcialInput" placeholder="Monto a abonar"
+                            disabled>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="confirmarPagoBtn">Confirmar Pago</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Historial de Pago -->
+    <div class="modal fade" id="historialPagoModal" tabindex="-1" aria-labelledby="historialPagoModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="historialPagoModalLabel">Historial de Pago</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Información del cliente -->
+                    <p><strong>Cliente:</strong> <span id="nombreClienteHistorial"></span></p>
+                    <p><strong>Cédula:</strong> <span id="cedulaClienteHistorial"></span></p>
+
+                    <!-- Barra de búsqueda -->
+                    <div class="mb-3">
+                        <input type="text" id="historialPagoSearch" class="form-control"
+                            placeholder="Buscar en el historial...">
+                    </div>
+
+                    <!-- Tabla de historial de pagos -->
+                    <h5 class="mt-3">Detalles de Pagos</h5>
+                    <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                        <table class="table table-striped" id="historialPagoTable">
+                            <thead>
+                                <tr>
+                                    <th># Pago</th>
+                                    <th>Deuda</th>
+                                    <th>Monto de Abono</th>
+                                    <th>Fecha de Pago</th>
+                                    <th>Tipo de Pago</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="4" class="text-center">No se han registrado pagos para este cliente.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal para el Pago Inicial | Venta al credito -->
+    <div class="modal fade" id="modalPagoInicial" tabindex="-1" aria-labelledby="modalPagoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalPagoLabel">Pago Inicial | Venta Credito</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formVenta">
+                        <div class="mb-3" id="pagoInicialContainer">
+                            <label id="lblPagoInicial" for="pagoInicial" class="form-label">Monto de Pago
+                                Inicial</label>
+                            <input type="number" class="form-control" id="pagoInicial" min="0" step="1.00" required>
+                            <p id="msgPagoInicial"></p>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="guardarVenta">Guardar Venta</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal para seleccionar tipo de venta | Ventas -->
+    <div class="modal fade" id="modalTipoVenta" tabindex="-1" aria-labelledby="modalTipoVentaLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalPagoLabel">Tipo de venta</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formVenta">
+                        <div class="mb-3">
+                            <label for="selectTipoVenta" class="form-label">Tipo de venta: </label>
+                            <Select class="form-select" name="selectTipoVenta" id="selectTipoVenta">
+                                <option value="Credito">Credito</option>
+                                <option value="Contado">Contado</option>
+                            </Select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="selectTipoEntrega" class="form-label">Tipo de entrega: </label>
+                            <Select class="form-select" name="selectTipoEntrega" id="selectTipoEntrega">
+                                <option value="Inmediata">Inmediata</option>
+                                <option value="Encargo">Encargo</option>
+                            </Select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="btnGuardarTipoVenta">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--MODAL PARA BUSQUEDA POR NOMBRE CLIENTE-->
+    <div id="clienteModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">Seleccionar Cliente</h5>
+                    <button type="button" class="btn-close text-bg-light" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Campo de búsqueda dentro del modal -->
+                    <div class="input-group mb-3">
+                        <input type="text" id="buscarCliente" class="form-control" placeholder="Buscar cliente...">
+                    </div>
+
+
+                    <!-- Lista de clientes con mejor estructura y estilo -->
+                    <ul id="listaClientes" class="list-group">
+                        <!-- Los clientes se añadirán dinámicamente aquí -->
+                        <!-- Ejemplo:
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Nombre del Cliente
+                            <button class="btn btn-sm btn-primary" onclick="seleccionarCliente(clienteId)">Seleccionar</button>
+                        </li>
+                        -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="{{url_for('static', filename='js/layout.js')}}"></script>
+    <script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+
+
+    <script src=" //cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous">
+        </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous">
+        </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.6.10/lottie.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+</body>
+
+
+</html>

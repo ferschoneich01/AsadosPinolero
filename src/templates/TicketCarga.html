@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=auto, initial-scale=1.0">
+    <title>Ticket</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            width: 80mm;
+            /* Mínimo según el contenido */
+            margin: 0;
+        }
+
+        .invoice-header,
+        .total,
+        .client-details {
+            text-align: center;
+            margin: 0;
+            padding: 5px 0;
+        }
+
+        .invoice-header h1 {
+            font-size: 16px;
+            margin: 0;
+        }
+
+        .invoice-header p,
+        .client-details p {
+            font-size: 11px;
+            margin: 2px 0;
+        }
+
+        .invoice-details {
+            width: 100%;
+            font-size: 11px;
+            border-collapse: collapse;
+            margin: 5px 0;
+        }
+
+        .invoice-details th,
+        .invoice-details td {
+            padding: 3px 0;
+            text-align: left;
+        }
+
+        .invoice-details th {
+            font-weight: bold;
+            border-bottom: 1px dashed #000;
+        }
+
+        .invoice-details td {
+            border-bottom: 1px dashed #000;
+        }
+
+        .total h3 {
+            font-size: 12px;
+            margin: 5px 0;
+            border-top: 1px dashed #000;
+            padding-top: 5px;
+        }
+
+        .thanks {
+            font-size: 10px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .logo-name {
+            font-weight: 700;
+        }
+
+        h5 {
+            margin-top: 2px;
+            margin-bottom: 7px;
+        }
+
+        .title {
+            font-weight: 400;
+            font-size: x-large;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Encabezado de la Factura -->
+    <div class="invoice-header">
+
+        <h1 class="logo-name">Blandon Comercial</h1>
+        <p class="title">Ticket de Carga</p>
+        <h5>
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"
+                style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;">
+                <path
+                    d="m20.487 17.14-4.065-3.696a1.001 1.001 0 0 0-1.391.043l-2.393 2.461c-.576-.11-1.734-.471-2.926-1.66-1.192-1.193-1.553-2.354-1.66-2.926l2.459-2.394a1 1 0 0 0 .043-1.391L6.859 3.513a1 1 0 0 0-1.391-.087l-2.17 1.861a1 1 0 0 0-.29.649c-.015.25-.301 6.172 4.291 10.766C11.305 20.707 16.323 21 17.705 21c.202 0 .326-.006.359-.008a.992.992 0 0 0 .648-.291l1.86-2.171a.997.997 0 0 0-.085-1.39z">
+                </path>
+            </svg>
+            +505 8830-3222
+        </h5>
+        <p><strong>Fecha:</strong> {{ fechaCarga }}</p>
+    </div>
+
+    <!-- Detalle carga -->
+    <table class="invoice-details">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for producto in productos %}
+            <tr>
+                <td>{{ producto.producto }}</td>
+                <td>{{ producto.cantidad }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Total de la Factura -->
+    <div class="cantidadProductos">
+        <h5>Total de productos:<strong style="border: 1px solid black; margin: 2px;">{{cantidadProductos}}</strong></h5>
+    </div>
+
+    <!-- Mensaje de Agradecimiento -->
+    <div class="thanks">
+        <p>¡Que Dios bendiga nuestro trabajo y cada entrega!</p>
+    </div>
+</body>
+
+</html>

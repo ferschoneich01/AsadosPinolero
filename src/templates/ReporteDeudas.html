@@ -1,0 +1,62 @@
+{% extends 'layout.html' %}
+{% block body %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/ReporteVentas.css') }}">
+<div class="container">
+    <h2 class="mb-4">Reporte de Deudas Global</h2>
+
+    <!-- Mostrar el total de deudas con comas en los miles -->
+    <div class="alert alert-info" role="alert">
+        <strong>Total de Deudas:</strong> C$ {{ "{:,.2f}".format(total_deuda) }}
+    </div>
+
+
+    <!-- Card de resultados -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5 class="card-title">Resultados del Reporte</h5>
+        </div>
+        <div class="card-body table-responsive">
+            <!-- Tabla de deudas -->
+            <table class="table table-striped" id="ventasList">
+                <thead>
+                    <tr>
+                        <th>Num. Deuda</th>
+                        <th>Num. Venta</th>
+                        <th>Cliente</th>
+                        <th>Monto Deuda</th>
+                        <th>Estado de la Deuda</th>
+                        <th>Fecha Creacion</th>
+                        <th>Dias Deuda</th>
+                    </tr>
+                </thead>
+                <tbody id="salesReportTable">
+                    <!-- Filas de ventas generadas dinámicamente con Jinja2 -->
+                    {% for deuda in deudas %}
+                    <tr>
+                        <td>{{ deuda.deudaid }}</td>
+                        <td>{{ deuda.ventaid }}</td>
+                        <td>{{ deuda.nombrescompleto }}</td>
+                        <td>C${{ "{:,.2f}".format(deuda.montodeuda) }}</td>
+                        <td>{{ deuda.estadodeuda }}</td>
+                        <td>{{ deuda.fechadeuda }}</td>
+                        <td>{{ deuda.diasdeuda }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="7" class="text-center">No se encontraron deudas.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="text-end mt-3">
+        <a href="/GestionReportes" class="btn btn-secondary">
+            <i class='bx bx-arrow-back'></i> Volver
+        </a>
+    </div>
+</div>
+
+{% endblock %}

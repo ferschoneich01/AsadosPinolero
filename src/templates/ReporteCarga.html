@@ -1,0 +1,90 @@
+{% extends 'layout.html'%}
+{% block body %}
+
+<div class="container">
+    <h2 class="mb-4">Reporte de Carga</h2>
+
+    <!-- Card principal -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Filtros de Fecha y Hora</h5>
+        </div>
+        <div class="card-body">
+            <!-- Filtro de rango de fechas y hora de inicio -->
+            <form id="filterForm">
+                <div class="row mb-4">
+                    <!-- Fecha y hora de inicio -->
+                    <div class="col-md-6">
+                        <label for="startDate" class="form-label">Fecha de inicio:</label>
+                        <input type="date" class="form-control" id="startDate" required>
+                        <!--<label for="startTime" class="form-label mt-2">Hora de inicio:</label>
+                        <input type="time" class="form-control" id="startTime" required>-->
+                    </div>
+                    <!-- Fecha de fin -->
+                    <div class="col-md-6">
+                        <label for="endDate" class="form-label">Fecha de fin:</label>
+                        <input type="date" class="form-control" id="endDate" disabled>
+                    </div>
+                </div>
+                <div class="form-check mb-4">
+                    <input type="checkbox" class="form-check-input" id="enableEndDate">
+                    <label class="form-check-label" for="enableEndDate">Usar Fecha de Fin</label>
+                </div>
+                <button type="submit" class="btn btn-success mb-3">Generar Reporte</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Card de resultados -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5 class="card-title">Resultados del Reporte</h5>
+        </div>
+        <div class="card-body">
+            <!-- Tabla de productos -->
+            <table id="tableProducts" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Total Ingresos</th>
+                    </tr>
+                </thead>
+                <tbody id="productReportTable">
+                    <!-- Filas de productos generadas dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="text-end mt-3">
+        <a href="/GestionReportes" class="btn btn-secondary">
+            <i class='bx bx-arrow-back'></i> Volver
+        </a>
+
+        <button id="btnImpReporteCarga" type="button" class="btn btn-primary">Imprimir Reporte</button>
+    </div>
+</div>
+
+<script>
+    document.getElementById('enableEndDate').addEventListener('change', function () {
+        const endDate = document.getElementById('endDate');
+        const startDate = document.getElementById('startDate');
+
+        if (this.checked) {
+            endDate.disabled = false;
+            endDate.min = startDate.value; // Establece la fecha mínima en "Fecha de fin" en base a "Fecha de inicio"
+        } else {
+            endDate.disabled = true;
+            endDate.value = '';
+        }
+    });
+
+    document.getElementById('startDate').addEventListener('input', function () {
+        if (this.value && document.getElementById('enableEndDate').checked) {
+            document.getElementById('endDate').min = this.value;
+        }
+    });
+</script>
+<script src="{{ url_for('static', filename='js/ReporteCarga.js') }}"></script>
+{% endblock %}

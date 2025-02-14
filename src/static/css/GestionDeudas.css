@@ -1,0 +1,160 @@
+body {
+    font-size: 16px;
+}
+
+.card {
+    margin-bottom: 20px;
+}
+
+#paymentHistory {
+    width: 100%;
+}
+
+#paymentHistory th, #paymentHistory td {
+    vertical-align: middle;
+    vertical-align: middle;
+    white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+}
+
+.table-responsive {
+    max-height: 60vh;
+    overflow-x: auto;
+    overflow-y: auto; 
+}
+
+#noPaymentsRow {
+    display: none;
+}
+
+#paymentAmount, #editPaymentAmount {
+    text-align: right;
+}
+
+#searchInput {
+    margin-bottom: 1rem;
+}
+
+/* Alertas con posición fija y centrada horizontalmente en la parte superior */
+#alertPlaceholder {
+    position: fixed;
+    top: 10px;  /* Inicia en la parte superior */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1200;
+    width: 100%;  /* Asegura que el contenedor abarque todo el ancho */
+    max-width: auto;  /* Limitar el ancho máximo de las alertas */
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+}
+
+/* Ajustar las propiedades de la alerta */
+.alert {
+    opacity: 0.85;
+    pointer-events: auto;  /* Permitir interacción con la alerta */
+}
+
+/* Animación para que la alerta baje desde arriba */
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 0.85;
+    }
+}
+
+/* Animación para que la alerta suba hacia arriba */
+@keyframes slideUp {
+    from {
+        transform: translateY(0);
+        opacity: 0.85;
+    }
+    to {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+}
+
+/* Clase para animación de entrada (baja desde arriba) */
+.alert.showing {
+    animation: slideDown 0.5s forwards;
+}
+
+/* Clase para animación de salida (sube hacia arriba) */
+.alert.hiding {
+    animation: slideUp 0.5s forwards;
+}
+
+
+/* Estilos para dispositivos móviles */
+@media (max-width: 767px) {
+    .container-fluid {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .card-header h2 {
+        font-size: 1.2rem;
+    }
+
+    .table-responsive {
+        font-size: 0.9rem;
+    }
+
+    #paymentHistory th, #paymentHistory td {
+        padding: 0.5rem 0.3rem;
+    }
+
+    .btn {
+        padding: 0.375rem 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    #searchInput, #clientSelect, #saleSelect {
+        font-size: 0.9rem;
+    }
+}
+
+/* Estilos para tablets */
+@media (min-width: 768px) and (max-width: 991px) {
+    .container-fluid {
+        max-width: 960px;
+        margin: 0 auto;
+    }
+
+    .card-body {
+        padding: 1.25rem;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    #paymentHistory {
+        font-size: 0.95rem;
+    }
+
+    #paymentHistory th, #paymentHistory td {
+        padding: 0.6rem;
+    }
+
+    .btn {
+        padding: 0.375rem 0.75rem;
+        font-size: 0.95rem;
+    }
+}
+
+/* Estilos para pantallas más grandes */
+@media (min-width: 992px) {
+    .container-fluid {
+        max-width: 1140px;
+        margin: 0 auto;
+    }
+}

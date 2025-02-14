@@ -1,0 +1,76 @@
+{% extends 'layout.html'%}
+{% block body %}
+
+<div class="container">
+    <div class="row g-3">
+        <!-- Tarjeta de Controles -->
+        <div class="col-12 col-lg-4">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4 class="mb-0">Controles de Filtro</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Formulario de selección de mes y año -->
+                    <form id="filterForm" class="row g-3">
+                        <!-- Campos de selección de mes y año -->
+                        <div class="col-12">
+                            <label for="month" class="form-label">Mes:</label>
+                            <select id="month" class="form-select" required>
+                                <!-- Opciones de mes -->
+                                <option value="1">Enero</option>
+                                <option value="2">Febrero</option>
+                                <option value="3">Marzo</option>
+                                <option value="4">Abril</option>
+                                <option value="5">Mayo</option>
+                                <option value="6">Junio</option>
+                                <option value="7">Julio</option>
+                                <option value="8">Agosto</option>
+                                <option value="9">Septiembre</option>
+                                <option value="10">Octubre</option>
+                                <option value="11">Noviembre</option>
+                                <option value="12">Diciembre</option>
+                            </select>
+                        </div>
+
+                        <div class="col-12">
+                            <label for="year" class="form-label">Año:</label>
+                            <select id="year" class="form-select" required></select>
+                        </div>
+
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary w-100">Generar Reporte</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tarjeta de Resultados -->
+        <div class="col-12 col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4 class="mb-0">Productos Más Vendidos</h4>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" style="position: relative; height:50vh; width:100%">
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botones de Navegación e Impresión -->
+    <div class="text-end mt-4">
+        <a href="/GestionReportes" class="btn btn-secondary me-2">
+            <i class='bx bx-arrow-back'></i> Volver
+        </a>
+    </div>
+</div>
+
+<!-- Incluir Chart.js antes de ReporteProducto.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+<script src="{{ url_for('static', filename='js/ReporteProducto.js') }}"></script>
+
+{% endblock %}

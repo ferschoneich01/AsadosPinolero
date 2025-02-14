@@ -1,0 +1,77 @@
+{% extends 'layout.html'%}
+{% block body %}
+
+<link rel="stylesheet" href="{{url_for('static', filename='css/ReporteVentas.css')}}">
+<div class="container">
+    <h2 class="mb-4">Reporte de Ventas</h2>
+
+    <!-- Card principal -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Filtros de Fecha</h5>
+        </div>
+        <div class="card-body">
+            <!-- Filtro de rango de fechas -->
+            <form id="filterForm">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <label for="startDate" class="form-label">Fecha de inicio:</label>
+                        <input type="date" class="form-control" id="startDate" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="endDate" class="form-label">Fecha de fin:</label>
+                        <input type="date" class="form-control" id="endDate" disabled>
+                    </div>
+                </div>
+                <div class="form-check mb-4">
+                    <input type="checkbox" class="form-check-input" id="enableEndDate">
+                    <label class="form-check-label" for="enableEndDate">Usar Fecha de Fin</label>
+                </div>
+                <button type="submit" class="btn btn-success mb-3">Generar Reporte</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Card de resultados -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5 class="card-title">Resultados del Reporte</h5>
+        </div>
+        <div class="card-body">
+            <!-- Campo de búsqueda -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Buscar en los resultados...">
+                </div>
+            </div>
+
+            <!-- Tabla de ventas -->
+            <div class="table-responsive">
+                <table class="table table-striped" id="ventasList">
+                    <thead>
+                        <tr>
+                            <th>ID Venta</th>
+                            <th>Nombre del Cliente</th>
+                            <th>Monto Total</th>
+                            <th>Tipo de Venta</th>
+                            <th>Estado</th>
+                            <th>Fecha de Venta</th>
+                        </tr>
+                    </thead>
+                    <tbody id="salesReportTable">
+                        <!-- Filas de ventas generadas dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-end mt-3">
+        <a href="/GestionReportes" class="btn btn-secondary">
+            <i class='bx bx-arrow-back'></i> Volver
+        </a>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/ReporteVentas.js') }}"></script>
+{% endblock %}

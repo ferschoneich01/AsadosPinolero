@@ -1,0 +1,36 @@
+app = "blandoncomercial"
+kill_signal = "SIGINT"
+kill_timeout = "5s"
+primary_region = "scl"
+
+[http_service]
+auto_start_machines = true
+auto_stop_machines = true
+force_https = true
+internal_port = 8_080
+min_machines_running = 0
+processes = [ "app" ]
+
+[[services]]
+internal_port = 8_080
+processes = [ "app" ]
+protocol = "tcp"
+
+  [services.concurrency]
+  hard_limit = 25
+  soft_limit = 20
+  type = "connections"
+
+  [[services.ports]]
+  force_https = true
+  handlers = [ "http" ]
+  port = 80
+
+  [[services.ports]]
+  handlers = [ "tls", "http" ]
+  port = 443
+
+[[vm]]
+cpu_kind = "shared"
+cpus = 1
+memory = "1gb"

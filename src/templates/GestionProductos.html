@@ -1,0 +1,84 @@
+{% extends 'layout.html'%}
+{% block body %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/GestionProductos.css')}}">
+
+<div class="container">
+
+    <h1 class="text-center mb-4">Registro de Productos</h1>
+
+    <div class="row g-3">
+        <div class="col-12 col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="h5 mb-0">Agregar Nuevo Producto</h2>
+                </div>
+                <div class="card-body">
+                    <form id="addProductForm" method="POST" action="/addProduct">
+                        <div class="mb-3">
+                            <label for="productName" class="form-label">Nombre del Producto</label>
+                            <input type="text" class="form-control" id="productName" name="nombreProducto"
+                                maxlength="50" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="productDescription" class="form-label">Descripción</label>
+                            <textarea class="form-control" id="productDescription" name="descripcionProducto" rows="3"
+                                maxlength="255" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Registrar Producto</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-8" id="tableProduct">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="h5 mb-0">Lista de Productos</h2>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="searchInput" placeholder="Buscar productos...">
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover" id="productList">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if productos %}
+                                {% for producto in productos %}
+                                <tr data-id="{{ producto['productoid'] }}"><!-- Mantén el data-id en la fila -->
+                                    <td>{{ producto['productoid'] }}</td>
+                                    <td>{{ producto['nombre'] }}</td>
+                                    <td>{{ producto['descripcion'] }}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary edit-button"
+                                            data-id="{{ producto['productoid'] }}">Editar</button>
+                                        <button class="btn btn-sm btn-danger delete-button"
+                                            data-id="{{ producto['productoid'] }}"
+                                            data-nombre="{{ producto['nombre'] }}">Eliminar</button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                {% else %}
+                                <tr id="noProductsRow">
+                                    <td colspan="4" class="text-center">No hay productos registrados</td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{{url_for('static', filename='js/GestionProducto.js')}}"></script>
+<script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+{% endblock %}

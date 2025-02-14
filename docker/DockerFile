@@ -1,0 +1,28 @@
+FROM python:3.10-alpine
+
+WORKDIR /app
+
+COPY . /app
+
+# Instala dependencias necesarias
+RUN apk update \
+    && apk add --no-cache \
+    gcc \
+    python3-dev \
+    musl-dev \
+    postgresql-dev \
+    gdk-pixbuf \
+    cairo-dev \
+    pango-dev \
+    libc-dev \
+    gobject-introspection-dev \
+    && pip install --no-cache-dir psycopg2
+
+# Instala dependencias de Python
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Instala las fuentes necesarias en Alpine
+RUN apk add --no-cache font-noto
+
+# Ejecuta la aplicación
+CMD ["python3", "src/application.py"]

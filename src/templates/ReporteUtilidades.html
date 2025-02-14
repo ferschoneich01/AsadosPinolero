@@ -1,0 +1,120 @@
+{% extends 'layout.html' %}
+{% block body %}
+
+<div class="container">
+    <h2 class="mb-4">Reporte de las Utilidades</h2>
+
+    <!-- Card principal -->
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Filtros de Fecha y Hora</h5>
+        </div>
+        <div class="card-body">
+            <!-- Filtro de rango de fechas y hora de inicio -->
+            <form id="filterForm">
+                <div class="row mb-4">
+                    <!-- Fecha y hora de inicio -->
+                    <div class="col-md-6">
+                        <label for="startDate" class="form-label">Fecha de inicio:</label>
+                        <input type="date" class="form-control" id="startDate" required>
+                    </div>
+                    <!-- Fecha de fin -->
+                    <div class="col-md-6">
+                        <label for="endDate" class="form-label">Fecha de fin:</label>
+                        <input type="date" class="form-control" id="endDate" disabled>
+                    </div>
+                </div>
+                <div class="form-check mb-4">
+                    <input type="checkbox" class="form-check-input" id="enableEndDate">
+                    <label class="form-check-label" for="enableEndDate">Usar Fecha de Fin</label>
+                </div>
+                <button type="submit" class="btn btn-success mb-3">Generar Reporte</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Card de resultados -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5 class="card-title">Resultados del Reporte</h5>
+        </div>
+        <div class="card-body">
+            <!-- Tabla de productos -->
+            <table id="tableProducts" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Margen de Ganancia</th>
+                        <th>SubTotal Utilidades</th>
+                    </tr>
+                </thead>
+                <tbody id="productReportTable">
+                    <!-- Filas de productos generadas dinámicamente -->
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+        <!-- Alerta de Total de Utilidades -->
+        <div class="alert alert-info text-end" role="alert" id="totalProfitAlert">
+            <strong>Total de Utilidades:</strong> C$ <span id="totalProfit">0.00</span>
+        </div>
+    </div>
+
+    <div class="text-end mt-3">
+        <a href="/GestionReportes" class="btn btn-secondary">
+            <i class='bx bx-arrow-back'></i> Volver
+        </a>
+    </div>
+</div>
+
+<script>
+    document.getElementById('enableEndDate').addEventListener('change', function () {
+        const endDate = document.getElementById('endDate');
+        const startDate = document.getElementById('startDate');
+
+        if (this.checked) {
+            endDate.disabled = false;
+            endDate.min = startDate.value;
+        } else {
+            endDate.disabled = true;
+            endDate.value = '';
+        }
+    });
+
+    document.getElementById('startDate').addEventListener('input', function () {
+        if (this.value && document.getElementById('enableEndDate').checked) {
+            document.getElementById('endDate').min = this.value;
+        }
+    });
+
+
+    function updateTotalProfit() {
+        const totalProfits = Array.from(document.querySelectorAll(".total-profit"))
+            .map(element => parseFloat(element.textContent) || 0);
+        const totalSum = totalProfits.reduce((acc, profit) => acc + profit, 0);
+
+        document.getElementById("totalProfit").textContent = new Intl.NumberFormat("es-ES", { style: "decimal", minimumFractionDigits: 2 }).format(totalSum);
+    }
+
+    document.addEventListener("input", function (e) {
+        if (e.target.classList.contains("profit-margin")) {
+            const row = e.target.closest("tr");
+            const quantity = parseFloat(row.querySelector(".quantity").textContent);
+            const margin = parseFloat(e.target.value) / 100;
+
+            // Calcula el total de utilidad y actualiza el valor en la fila
+            const totalProfit = quantity * margin * 10; // 10 representa un valor base de utilidad; ajusta según tus necesidades
+            row.querySelector(".total-profit").textContent = totalProfit.toFixed(2);
+
+            // Actualiza el total de todas las utilidades en la alerta
+            updateTotalProfit();
+        }
+    });
+    updateTotalProfit();
+</script>
+
+<script src="{{ url_for('static', filename='js/ReporteUtilidades.js') }}"></script>
+
+{% endblock %}

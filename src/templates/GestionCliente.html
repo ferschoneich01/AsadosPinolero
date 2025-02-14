@@ -1,0 +1,104 @@
+{% extends 'layout.html'%}
+{% block body %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/GestionCliente.css')}}">
+
+<div class="container">
+
+    <h1 class="text-center mb-4">Registro de Clientes</h1>
+    
+    <div class="row g-3">
+        <div class="col-12 col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="h5 mb-0">Agregar Nuevo Cliente</h2>
+                </div>
+                <div class="card-body">
+                    <form action="/addClient" method="POST" id="addClientForm">
+                        <div class="mb-3">
+                            <label for="clientName" class="form-label">Nombres</label>
+                            <input type="text" placeholder="Nombres del Cliente" class="form-control" id="clientName"
+                                name="nombreCliente" maxlength="100" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="clientSurName" class="form-label">Apellidos</label>
+                            <input type="text" placeholder="Apellidos del Cliente" class="form-control"
+                                id="clientSurName" name="apellidoCliente" maxlength="100" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="clientPhone" class="form-label">Teléfono</label>
+                            <input type="tel" placeholder="8888-8888" class="form-control" id="clientPhone"
+                                name="telefonoCliente" maxlength="20">
+                        </div>
+                        <div class="mb-3">
+                            <label for="clientCedula" class="form-label">Cedula</label>
+                            <input type="cedula" placeholder="000-000000-0000A" class="form-control" id="clientCedula"
+                                name="cedulaCliente" maxlength="100">
+                        </div>
+                        <div class="mb-3">
+                            <label for="clientAddress" class="form-label">Dirección</label>
+                            <textarea class="form-control" placeholder="Dirección..." id="clientAddress"
+                                name="direccionCliente" rows="3" maxlength="255"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Registrar Cliente</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-8" id="tableClient">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="h5 mb-0">Lista de Clientes</h2>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="searchInput" placeholder="Buscar clientes...">
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover" id="clientList">
+                            <thead>
+                                <tr>
+                                    <th>Cedula</th>
+                                    <th>Nombre Completo</th>
+                                    <th>Teléfono</th>
+                                    <th>Dirección</th>
+                                    <th>Fecha de Registro</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if clientes %}
+                                {% for cliente in clientes %}
+                                <tr data-id="{{ cliente['clienteid'] }}"> <!-- Mantén el data-id en la fila -->
+                                    <td>{{ cliente['cedula'] }}</td>
+                                    <td data-nombres="{{ cliente['nombres'] }}"
+                                        data-apellidos="{{ cliente['apellidos'] }}">
+                                        {{ cliente['nombres'] }} {{ cliente['apellidos'] }}
+                                    </td>
+                                    <td>{{ cliente['telefono'] }}</td>
+                                    <td>{{ cliente['direccion'] }}</td>
+                                    <td>{{ cliente['fecharegistro'] }}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary edit-button" data-id="{{ cliente['clienteid'] }}">Editar</button>
+                                        <button class="btn btn-sm btn-danger delete-button" data-id="{{ cliente['clienteid'] }}" data-nombre="{{ cliente['nombres'] }} {{ cliente['apellidos'] }}">Eliminar</button>
+                                    </td>
+                                </tr>
+
+                                {% endfor %}
+                                {% else %}
+                                <tr id="noClientsRow">
+                                    <td colspan="6" class="text-center">No hay clientes registrados</td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="{{url_for('static', filename='js/GestionCliente.js')}}"></script>
+{% endblock %}

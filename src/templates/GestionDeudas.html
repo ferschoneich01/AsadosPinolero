@@ -1,0 +1,90 @@
+{% extends 'layout.html'%}
+{% block body %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/GestionDeudas.css')}}">
+<div id="alertPlaceholder"></div>
+<div class="container">
+    
+    <h1 class="text-center mb-4">Administrar Deudas</h1>
+
+    <div class="row g-3">
+        <div class="col-12 col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="h5 mb-0">Buscar el Cliente</h2>
+                </div>
+                <div class="card-body">
+                    
+                    <form id="searchSalesForm">
+                        <div class="mb-3">
+                            <label for="customerSelect" class="form-label">Cliente</label>
+                            <select id="customerSelect" class="form-control" name="cliente_id" style="width: 100%;">
+                                <option value="">Seleccione un cliente</option>
+                                {% for cliente in clientes %}
+                                <option value="{{ cliente['clienteid'] }}" data-cedula="{{ cliente['cedula'] }}">
+                                    {{ cliente['nombres'] }} {{ cliente['apellidos'] }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="clientCedula" class="form-label">Cédula</label>
+                            <input type="text" placeholder="000-000000-0000A" class="form-control" id="clientCedula"
+                                name="cedulaCliente" readonly>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100" id="buscarVentasBtn">Buscar Ventas</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="h5 mb-0">Lista de las Deudas</h2>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover" id="paymentHistory">
+                            <thead>
+                                <tr data-id="${venta.ventaid}">
+                                    <th>Deuda</th>
+                                    <th># Venta</th>
+                                    <th>Cliente</th>
+                                    <th>Monto</th>
+                                    <th>Fecha de Venta</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="6" class="text-center">Seleccione un cliente para ver las deudas.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mt-3">
+                        <div id="total" class="font-weight-bold mb-2 mb-md-0">
+                            <strong>Total Deuda: C$00.00</strong>
+                        </div>
+                        <div class="d-flex flex-column flex-md-row">
+                            <button class="btn btn-info mb-2 mb-md-0 me-md-2" id="historialPagosBtn">
+                                <i class='bx bx-history'></i> Historial de Pagos
+                            </button>
+                            <button class="btn btn-success" id="realizarPagoBtn">
+                                <i class='bx bx-money'></i> Realizar Pago
+                            </button>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>        
+    </div>
+</div>
+
+<script type="text/javascript">
+    const sales_data = JSON.parse('{{ deudas_json | safe }}');
+</script>
+
+<script src="{{url_for('static', filename='js/GestionDeudas.js')}}"></script>
+{% endblock %}

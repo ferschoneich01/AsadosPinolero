@@ -1,0 +1,13 @@
+.container{
+    padding-bottom: 20px;
+}
+
+.table-responsive {
+    max-height: 45vh;
+    overflow-x: auto;
+    overflow-y: auto; 
+}
+#ventasList th, #ventasList td {
+    vertical-align: middle;
+    white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+}

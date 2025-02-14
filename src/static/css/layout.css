@@ -1,0 +1,335 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+:root{
+    --color-primary: #1E3E62;
+    --color-dark: #0B192C;
+}
+
+/* navmenu Y CONTENEDOR */
+.navmenu{
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 70px;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-primary);
+    padding: 15px 10px;
+    z-index: 99;
+    transition: all .5s;
+}
+
+.navmenu i{
+    color: #fff;
+    height: 60px;
+    min-width: 50px;
+    font-size: 22px;
+    text-align: center;
+    line-height: 60px;
+}
+
+.container-main{
+    position: relative;
+    min-height: 100vh;
+    top: 0;
+    left: 70px;
+    width: calc(100% - 70px);
+    transition: all .5s;
+    z-index: 2;
+}
+
+
+.container-main h1{
+    display: inline-block;
+    margin: 18px;
+}
+
+
+/* LOGO CONTAINER */
+.logo-container{
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.logo-container .logo-name{
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    opacity: 0;
+    transition: all .5s;
+}
+
+.logo-container #btn-menu{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+    cursor: pointer;
+    transition: all .5s;
+    z-index: 1;
+}
+
+
+/* ELEMENTOS MENU */
+.nav-container{
+    margin-top: 20px;
+    height: 100%;
+}
+
+.nav-container li{
+    position: relative;
+    margin: 8px 0;
+    list-style: none;
+}
+
+/* Tooltip */
+.tooltip{
+    position: absolute;
+    top: -20px;
+    left: calc(100% + 20px);
+    z-index: 3;
+    background: #fff;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 400;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: 0s;
+}
+
+.nav-container li:hover .tooltip{
+    opacity: 1;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all .4s;
+}
+
+
+/* Search */
+.nav-container li.search{
+    display: flex;
+    justify-content: center;
+}
+
+.nav-container input{
+    font-size: 15px;
+    color: #fff;
+    font-weight: 400;
+    outline: none;
+    height: 50px;
+    width: 50px;
+    border: none;
+    border-radius: 12px;
+    background: var(--color-dark);
+    transition: all .5s ease;
+}
+
+.nav-container input::placeholder{
+    color:  #fff;
+}
+
+.nav-container .bx-search{
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    font-size: 22px;
+    background: var(--color-dark);
+    color: #fff;
+}
+
+
+.nav-container .bx-search:hover{
+    background: #fff;
+    color: #11101d;
+}
+
+/* Enlaces del menu */
+.nav-container li a{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    border-radius: 12px;
+    align-items: center;
+    text-decoration: none;
+    transition: all .4s ease;
+    background: var(--color-primary);
+}
+
+
+.nav-container li a:hover{
+    background: #FFF;
+}
+
+.nav-container li a .links{
+    color: #fff;
+    font-size: 15px;
+    font-weight: 400;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: .4s;
+}
+
+.nav-container li a:hover .links,
+.nav-container li a:hover i{
+    color: #000;
+    transition: all .5s;
+}
+
+.nav-container li i{
+    height: 50px;
+    line-height: 50px;
+    font-size: 18px;
+    border-radius: 12px;
+}
+
+
+/* ESTILOS USER */
+.user{
+    display: flex !important;
+    position: relative !important;
+    height: 60px !important;
+    width: 100% !important;
+    padding: 10px 14px !important;
+    background: var(--color-dark);
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    transition: all .5s ease !important;
+}
+
+.user .user-container{
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+.user #logout{
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    background: var(--color-dark);
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    border-radius: 0;
+    cursor: pointer;
+    transition: all .5s;
+}
+
+
+.user #logout:hover{
+    background: #fff;
+    color: #000;
+}
+
+ul{
+    padding-left: 0 !important;
+}
+
+
+/* ESTILOS PARA MENU ABIERTO */
+.navmenu.open{
+    width: 250px;
+}
+
+.navmenu.open ~ container-main{
+    left: 250px;
+    width: calc(100% - 250px);
+}
+
+/* Logo container */
+.navmenu.open .logo-container .logo-name{
+    opacity: 1;
+    color: #FF6500;
+}
+
+.navmenu.open .logo-container #btn-menu{
+    right: 0;
+    position: relative;
+ 
+    background-image: url('../assets/LOGO2.svg'); /* Ruta del archivo SVG */
+
+}
+
+
+/* Menu */
+.navmenu.open li .tooltip{
+    display: none;
+}
+
+.navmenu.open input{
+    padding: 0 20px 0 50px;
+    width: 100%;
+}
+
+.navmenu.open .bx-search{
+    width: 0;
+}
+
+.navmenu.open li a .links{
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* User */
+.navmenu.open .user #logout{
+    width: 50px;
+    background: none;
+}
+
+.user img{
+    height: 35px;
+    width: 35px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-right: 10px;
+}
+
+.user .name,
+.user .job{
+    font-size: 15px;
+    font-weight: 400;
+    color: #fff;
+    white-space: nowrap;
+}
+
+.user .job{
+    font-size: 12px;
+}
+
+i.logo {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    background-image: url('../assets/LOGO.svg'); /* Ruta del archivo SVG */
+    background-size: contain;
+    background-repeat: no-repeat;
+    vertical-align: middle; /* Alineación con el texto */
+}
+
+.table-responsive {
+    max-height: 60vh;
+    overflow-x: auto;
+    overflow-y: auto; 
+}
+
+#historialPagoTable th, #historialPagoTable td {
+    vertical-align: middle;
+    white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+}

@@ -1,0 +1,121 @@
+{% extends 'layout.html'%}
+{% block body %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/GestionVentas.css')}}">
+
+<div class="container mt-4">
+    <!-- Panel de Navegación con Pestañas -->
+    <ul class="nav nav-tabs" id="gestionVentasTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="nueva-venta-tab" data-bs-toggle="tab" data-bs-target="#nueva-venta"
+                type="button" role="tab" aria-controls="nueva-venta" aria-selected="true">Nueva Venta</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="ventas-pendientes-tab" data-bs-toggle="tab" data-bs-target="#ventas-pendientes"
+                type="button" role="tab" aria-controls="ventas-pendientes" aria-selected="false">Pendiente de
+                Entrega</button>
+        </li>
+    </ul>
+
+    <!-- Contenido de las Pestañas -->
+    <div class="tab-content" id="gestionVentasTabContent">
+        <!-- Panel Nueva Venta (contenido original) -->
+        <div class="tab-pane fade show active" id="nueva-venta" role="tabpanel" aria-labelledby="nueva-venta-tab">
+            <!-- Contenido original de la vista de nueva venta -->
+            {% include 'partials/nueva_venta.html' %}
+        </div>
+
+        <!-- Panel Ventas Pendientes -->
+        <div class="tab-pane fade" id="ventas-pendientes" role="tabpanel" aria-labelledby="ventas-pendientes-tab">
+            <div class="card mt-4">
+                <div class="card-header">Ventas Pendientes de Entrega</div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>#Factura</th>
+                                    <th>Cliente</th>
+                                    <th>Fecha de Venta</th>
+                                    <th>Monto Total</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ventasPendientesTableBody">
+                                {% for v in pendienteEntregas %}
+                                <tr>
+                                    <td>{{v.ventaid}}</td>
+                                    <td>{{v.nombres}} {{v.apellidos}}</td>
+                                    <td>{{v.fechaventa}}</td>
+                                    <td>C$ {{v.montoventa}}</td>
+                                    <td><button class="btn btn-success btn-sm"
+                                            onclick="entregarVenta('{{v.nombres}}',{{v.ventaid}})">Entregar</button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // Función para marcar una venta como entregada
+    function entregarVenta(cliente, ventaid) {
+        Swal.fire({
+            title: `¿Confirmas la entrega para ${cliente}?`,
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, entregar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                // Enviar la solicitud AJAX al servidor
+                $.ajax({
+                    url: '/deliverOrder/' + ventaid, // URL donde está tu ruta para guardar la venta
+                    method: 'POST',
+                    contentType: 'application/json',
+                    success: function (response) {
+                        if (response.status === 'success') {
+                            //hideLoadingModal();
+                            // Mostrar SweetAlert de éxito y recargar la página
+                            Swal.fire({
+                                title: `La venta de ${cliente} ha sido marcada como entregada.`,
+                                icon: "success",
+                                showConfirmButton: false,
+                                timer: 1000,
+                            })
+
+                            location.reload(true);
+                        } else {
+                            // Si hubo un error, mostrar el mensaje de error
+                            Swal.fire({
+                                title: "Error en entrega",
+                                text: data.message,
+                                icon: "error",
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        //hideLoadingModal();
+                        Swal.fire({
+                            title: "Error en venta",
+                            text: 'Ocurrió un error al registrar la venta. Inténtalo de nuevo',
+                            icon: "error",
+                        });
+                    }
+                });
+
+
+
+            }
+        });
+    }
+
+</script>
+<script src="{{url_for('static', filename='js/GestionVentas.js')}}"></script>
+{% endblock %}
